@@ -4,7 +4,6 @@ namespace web.Models
     {
         public int ID { get; set; }
 
-        //Mogoce pustimo ID-je in je boljse imeti hidden foreign key in dobimo v viewu lahko vse podatke ne samo ID-ja ven.
         public int ItemID { get; set; }
 
         public int WarehouseID { get; set; }
