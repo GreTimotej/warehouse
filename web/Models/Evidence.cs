@@ -4,7 +4,7 @@ namespace web.Models
     {
         public int ID { get; set; }
 
-        public int ItemID { get; set; }
+        public int? ItemID { get; set; }
 
         public int WarehouseID { get; set; }
 
@@ -14,7 +14,7 @@ namespace web.Models
 
         public Warehouse Warehouse { get; set; }
 
-        public Item Item { get; set; }
+        public Item? Item { get; set; }
 
         public Customer Customer { get; set; }
     }
