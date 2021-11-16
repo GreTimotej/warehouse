@@ -12,10 +12,10 @@ namespace web.Models
 
         public DateTime Out { get; set; }
 
-        public Warehouse Warehouse { get; set; }
+        public Warehouse? Warehouse { get; set; }
 
         public Item? Item { get; set; }
 
-        public Customer Customer { get; set; }
+        public Customer? Customer { get; set; }
     }
 }
