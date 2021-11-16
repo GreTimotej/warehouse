@@ -12,8 +12,8 @@ namespace web.Models
 
         public int CustomerID { get; set; }
 
-        public Customer Customer { get; set; }
+        public Customer? Customer { get; set; }
 
-        public Warehouse Warehouse { get; set; }
+        public Warehouse? Warehouse { get; set; }
     }
 }
