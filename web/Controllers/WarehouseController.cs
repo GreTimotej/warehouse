@@ -10,7 +10,7 @@ using web.Models;
 using Microsoft.AspNetCore.Authorization;
 namespace web.Controllers
 {
-    [Authorize]
+    // [Authorize]
     public class WarehouseController : Controller
     {
         private readonly WarehouseContext _context;
