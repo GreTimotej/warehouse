@@ -65,9 +65,52 @@ namespace web.Data
             }
             context.SaveChanges();
 
-            // var user = new ApplicationUser{UserName="admin", Email="admin@example.com", EmailConfirmed=true, LockoutEnabled=false};
-            // var password = "T123est123";
-            // var result = 
+            var roles = new IdentityRole[] {
+                new IdentityRole{Id="1", Name="Administrator"},
+                new IdentityRole{Id="2", Name="Manager"},
+                new IdentityRole{Id="3", Name="Staff"}
+            };
+
+            foreach (IdentityRole r in roles)
+            {
+                context.Roles.Add(r);
+            }
+
+            var user = new ApplicationUser
+            {
+                FirstName = "A",
+                LastName = "A",
+                Email = "admin@warehouse.com",
+                UserName = "admin@warehouse.com",
+                NormalizedUserName = "admin@warehouse.com",
+                EmailConfirmed = true,
+                PhoneNumberConfirmed = true,
+                SecurityStamp = Guid.NewGuid().ToString("D")
+            };
+
+
+            if (!context.Users.Any(u => u.UserName == user.UserName))
+            {
+                var password = new PasswordHasher<ApplicationUser>();
+                var hashed = password.HashPassword(user,"Test123!");
+                user.PasswordHash = hashed;
+                context.Users.Add(user);
+                
+            }
+
+            context.SaveChanges();
+
+            var UserRoles = new IdentityUserRole<string>[]
+            {
+                new IdentityUserRole<string>{RoleId = roles[0].Id, UserId=user.Id},
+            };
+
+            foreach (IdentityUserRole<string> r in UserRoles)
+            {
+                context.UserRoles.Add(r);
+            }
+
+            context.SaveChanges();
         }
     }
 }
