@@ -56,7 +56,7 @@ namespace web.Data
 
             var items = new Item[]
             {
-                new Item{Name="100 Ohm THT resistor", WarehouseID=2, CustomerID=2},
+                new Item{Name="100 Ohm THT resistor", Quantity=19, WarehouseID=2, CustomerID=2},
                 new Item{Name="M5 screw kit", Description="M5 screw with bolt and nuts. Inox material", WarehouseID=2, CustomerID=2},
             };
             foreach (Item i in items)

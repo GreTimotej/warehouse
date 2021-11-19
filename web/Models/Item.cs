@@ -1,3 +1,5 @@
+using System.ComponentModel;
+
 namespace web.Models
 {
     public class Item
@@ -7,6 +9,8 @@ namespace web.Models
         public string Name { get; set; }
 
         public string? Description { get; set; }
+        
+        public int Quantity { get; set; } = 1;
 
         public int WarehouseID { get; set; }
 
