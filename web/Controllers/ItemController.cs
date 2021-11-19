@@ -7,6 +7,8 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using web.Data;
 using web.Models;
+using Microsoft.AspNetCore.Authorization;
+
 
 namespace web.Controllers
 {
@@ -20,10 +22,47 @@ namespace web.Controllers
         }
 
         // GET: Item
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(string sortOrder)
         {
+
+            ViewData["NameSortParm"] = String.IsNullOrEmpty(sortOrder) ? "name_desc" : "";
+            ViewData["DateSortParm"] = sortOrder == "Date" ? "date_desc" : "Date";
+
             var warehouseContext = _context.Items.Include(i => i.Customer).Include(i => i.Warehouse);
-            return View(await warehouseContext.ToListAsync());
+            var items = from i in warehouseContext
+                        select i;
+
+            switch (sortOrder)
+            {
+                case "name_desc":
+                    items = items.OrderByDescending(i => i.Name);
+                    break;
+                case "desc":
+                    items = items.OrderBy(i => i.Description);
+                    break;
+                case "desc_desc":
+                    items = items.OrderByDescending(i => i.Description);
+                    break;
+                case "customer":
+                    items = items.OrderBy(i => i.Customer);
+                    break;
+                case "customer_desc":
+                    items = items.OrderByDescending(i => i.Customer);
+                    break;
+                case "warehouse":
+                    items = items.OrderBy(i => i.Warehouse);
+                    break;
+                case "warehouse_desc":
+                    items = items.OrderByDescending(i => i.Warehouse);
+                    break;
+                default:
+                    items = items.OrderBy(i => i.Name);
+                    break;
+            }
+
+            
+
+            return View(await items.AsNoTracking().ToListAsync());
         }
 
         // GET: Item/Details/5
@@ -47,6 +86,7 @@ namespace web.Controllers
         }
 
         // GET: Item/Create
+        [Authorize]
         public IActionResult Create()
         {
             ViewData["CustomerID"] = new SelectList(_context.Customers, "ID", "ID");
@@ -73,6 +113,7 @@ namespace web.Controllers
         }
 
         // GET: Item/Edit/5
+        [Authorize]
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -128,6 +169,7 @@ namespace web.Controllers
         }
 
         // GET: Item/Delete/5
+        [Authorize]
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
