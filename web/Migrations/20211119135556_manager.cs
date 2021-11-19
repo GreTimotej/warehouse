@@ -4,7 +4,7 @@
 
 namespace web.Migrations
 {
-    public partial class itemChanges2 : Migration
+    public partial class manager : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {

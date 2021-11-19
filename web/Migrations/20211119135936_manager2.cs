@@ -4,7 +4,7 @@
 
 namespace web.Migrations
 {
-    public partial class DBFill : Migration
+    public partial class manager2 : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
