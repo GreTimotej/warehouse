@@ -2,6 +2,7 @@ using web.Data;
 using web.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
 
 var builder = WebApplication.CreateBuilder(args);
 var connectionString = builder.Configuration.GetConnectionString("WarehouseContext");
@@ -17,6 +18,9 @@ builder.Services.AddDefaultIdentity<ApplicationUser>(options => options.SignIn.R
 builder.Services.AddDbContext<WarehouseContext>(options =>
     options.UseSqlServer(connectionString));
 
+builder.Services.AddMvc().AddRazorPagesOptions(options=> {
+   options.Conventions.AddAreaPageRoute("Identity", "/Account/Login",""); 
+}).SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
 
 var app = builder.Build();
 CreateDbIfNotExists(app);
