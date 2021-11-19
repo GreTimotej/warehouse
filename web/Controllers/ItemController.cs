@@ -9,9 +9,9 @@ using web.Data;
 using web.Models;
 using Microsoft.AspNetCore.Authorization;
 
-
 namespace web.Controllers
 {
+    [Authorize]
     public class ItemController : Controller
     {
         private readonly WarehouseContext _context;
@@ -99,7 +99,7 @@ namespace web.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("ID,Name,Description,WarehouseID,CustomerID")] Item item)
+        public async Task<IActionResult> Create([Bind("ID,Name,Description,Quantity,WarehouseID,CustomerID")] Item item)
         {
             if (ModelState.IsValid)
             {
@@ -136,7 +136,7 @@ namespace web.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("ID,Name,Description,WarehouseID,CustomerID")] Item item)
+        public async Task<IActionResult> Edit(int id, [Bind("ID,Name,Description,Quantity,WarehouseID,CustomerID")] Item item)
         {
             if (id != item.ID)
             {

@@ -56,7 +56,7 @@ namespace web.Data
 
             var items = new Item[]
             {
-                new Item{Name="100 Ohm THT resistor", WarehouseID=2, CustomerID=2},
+                new Item{Name="100 Ohm THT resistor", Quantity=19, WarehouseID=2, CustomerID=2},
                 new Item{Name="M5 screw kit", Description="M5 screw with bolt and nuts. Inox material", WarehouseID=2, CustomerID=2},
             };
             foreach (Item i in items)
@@ -88,7 +88,6 @@ namespace web.Data
                 SecurityStamp = Guid.NewGuid().ToString("D")
             };
 
-
             if (!context.Users.Any(u => u.UserName == user.UserName))
             {
                 var password = new PasswordHasher<ApplicationUser>();
@@ -100,9 +99,57 @@ namespace web.Data
 
             context.SaveChanges();
 
+            var manager = new ApplicationUser
+            {
+                FirstName = "John",
+                LastName = "Smithy",
+                Email = "john.smith@warehouse.com",
+                UserName = "john.smith@warehouse.com",
+                NormalizedUserName = "john.smith@warehouse.com",
+                EmailConfirmed = true,
+                PhoneNumberConfirmed = true,
+                SecurityStamp = Guid.NewGuid().ToString("D")
+            };
+
+            if (!context.Users.Any(u => u.UserName == manager.UserName))
+            {
+                var password = new PasswordHasher<ApplicationUser>();
+                var hashed = password.HashPassword(manager,"Test123!");
+                manager.PasswordHash = hashed;
+                context.Users.Add(manager);
+                
+            }
+
+            context.SaveChanges();
+
+            var staff = new ApplicationUser
+            {
+                FirstName = "Miha",
+                LastName = "novak",
+                Email = "miha.novak@warehouse.com",
+                UserName = "miha.novak@warehouse.com",
+                NormalizedUserName = "miha.novak@warehouse.com",
+                EmailConfirmed = true,
+                PhoneNumberConfirmed = true,
+                SecurityStamp = Guid.NewGuid().ToString("D")
+            };
+
+            if (!context.Users.Any(u => u.UserName == staff.UserName))
+            {
+                var password = new PasswordHasher<ApplicationUser>();
+                var hashed = password.HashPassword(staff,"Test123!");
+                staff.PasswordHash = hashed;
+                context.Users.Add(staff);
+                
+            }
+
+            context.SaveChanges();
+
             var UserRoles = new IdentityUserRole<string>[]
             {
                 new IdentityUserRole<string>{RoleId = roles[0].Id, UserId=user.Id},
+                new IdentityUserRole<string>{RoleId = roles[1].Id, UserId=manager.Id},
+                new IdentityUserRole<string>{RoleId = roles[2].Id, UserId=staff.Id},
             };
 
             foreach (IdentityUserRole<string> r in UserRoles)

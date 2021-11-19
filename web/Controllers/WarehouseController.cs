@@ -10,7 +10,7 @@ using web.Models;
 using Microsoft.AspNetCore.Authorization;
 namespace web.Controllers
 {
-    [Authorize]
+    [Authorize(Roles = "Administrator, Manager, Staff")]
     public class WarehouseController : Controller
     {
         private readonly WarehouseContext _context;
@@ -44,6 +44,7 @@ namespace web.Controllers
             return View(warehouse);
         }
 
+        [Authorize(Roles = "Administartor")]
         // GET: Warehouse/Create
         public IActionResult Create()
         {
@@ -66,6 +67,7 @@ namespace web.Controllers
             return View(warehouse);
         }
 
+        [Authorize(Roles = "Administrator, Manager")]
         // GET: Warehouse/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
@@ -117,6 +119,7 @@ namespace web.Controllers
             return View(warehouse);
         }
 
+        [Authorize(Roles = "Administartor")]
         // GET: Warehouse/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
