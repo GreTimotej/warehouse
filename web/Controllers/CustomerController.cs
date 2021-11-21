@@ -22,9 +22,90 @@ namespace web.Controllers
         }
 
         // GET: Customer
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(
+        string sortOrder,
+        string currentFilter,
+        string searchString,
+        int? pageNumber)
         {
-            return View(await _context.Customers.ToListAsync());
+            ViewData["CurrentSort"] = sortOrder;
+            ViewData["FirstNameSortParm"] = String.IsNullOrEmpty(sortOrder) ? "firstname_desc" : "";
+            ViewData["LastNameSortParm"] = sortOrder == "lastname" ? "lastname_desc" : "lastname";
+            ViewData["AddressSortParm"] = sortOrder == "address" ? "address_desc" : "address";
+            ViewData["ZIPSortParm"] = sortOrder == "zip" ? "zip_desc" : "zip";
+            ViewData["CitySortParm"] = sortOrder == "city" ? "city_desc" : "city";
+            ViewData["CountrySortParm"] = sortOrder == "country" ? "country_desc" : "country";
+
+            if (searchString != null)
+            {
+                pageNumber = 1;
+            }
+            else
+            {
+                searchString = currentFilter;
+            }
+            
+            ViewData["CurrentFilter"] = searchString;
+
+            var customers = from c in _context.Customers
+                            select c;
+
+            if (!String.IsNullOrEmpty(searchString))
+            {
+                Int64 anumber = 9999999;
+                if (Int64.TryParse(searchString,out anumber)) {}
+                customers = customers.Where(i => i.FirstName.Contains(searchString)
+                                || i.LastName.Contains(searchString)
+                                || i.Address.Contains(searchString)
+                                || (i.ZIP == anumber && anumber != 9999999)
+                                || i.City.Contains(searchString)
+                                || i.Country.Contains(searchString)
+                                );
+            }
+
+            switch (sortOrder)
+            {
+                case "firstname_desc":
+                    customers = customers.OrderByDescending(i => i.FirstName);
+                    break;
+                case "lastname":
+                    customers = customers.OrderBy(i => i.LastName);
+                    break;
+                case "lastname_desc":
+                    customers = customers.OrderByDescending(i => i.LastName);
+                    break;
+                case "address":
+                    customers = customers.OrderBy(i => i.Address);
+                    break;
+                case "address_desc":
+                    customers = customers.OrderByDescending(i => i.Address);
+                    break;
+                case "zip":
+                    customers = customers.OrderBy(i => i.ZIP);
+                    break;
+                case "zip_desc":
+                    customers = customers.OrderByDescending(i => i.ZIP);
+                    break;
+                case "city":
+                    customers = customers.OrderBy(i => i.City);
+                    break;
+                case "city_desc":
+                    customers = customers.OrderByDescending(i => i.City);
+                    break;
+                case "country":
+                    customers = customers.OrderBy(i => i.Country);
+                    break;
+                case "country_desc":
+                    customers = customers.OrderByDescending(i => i.Country);
+                    break;
+                default:
+                    customers = customers.OrderBy(i => i.FirstName);
+                    break;
+            }
+
+
+            int pageSize = 6;
+            return View(await PaginatedList<Customer>.CreateAsync(customers.AsNoTracking(), pageNumber ?? 1, pageSize));
         }
 
         // GET: Customer/Details/5

@@ -22,9 +22,83 @@ namespace web.Controllers
         }
 
         // GET: Distributor
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(
+        string sortOrder,
+        string currentFilter,
+        string searchString,
+        int? pageNumber)
         {
-            return View(await _context.Distributors.ToListAsync());
+            ViewData["CurrentSort"] = sortOrder;
+            ViewData["NameSortParm"] = String.IsNullOrEmpty(sortOrder) ? "name_desc" : "";
+            ViewData["AddressSortParm"] = sortOrder == "address" ? "address_desc" : "address";
+            ViewData["ZIPSortParm"] = sortOrder == "zip" ? "zip_desc" : "zip";
+            ViewData["CitySortParm"] = sortOrder == "city" ? "city_desc" : "city";
+            ViewData["CountrySortParm"] = sortOrder == "country" ? "country_desc" : "country";
+
+            
+            if (searchString != null)
+            {
+                pageNumber = 1;
+            }
+            else
+            {
+                searchString = currentFilter;
+            }
+            
+            ViewData["CurrentFilter"] = searchString;
+
+            var distributors = from d in _context.Distributors
+                            select d;
+
+            if (!String.IsNullOrEmpty(searchString))
+            {
+                Int64 anumber = 9999999;
+                if (Int64.TryParse(searchString,out anumber)) {}
+                distributors = distributors.Where(i => i.Name.Contains(searchString)
+                                || i.Address.Contains(searchString)
+                                || (i.ZIP == anumber && anumber != 9999999)
+                                || i.City.Contains(searchString)
+                                || i.Country.Contains(searchString)
+                                );
+            }
+
+            switch (sortOrder)
+            {
+                case "name_desc":
+                    distributors = distributors.OrderByDescending(i => i.Name);
+                    break;
+                case "address":
+                    distributors = distributors.OrderBy(i => i.Address);
+                    break;
+                case "address_desc":
+                    distributors = distributors.OrderByDescending(i => i.Address);
+                    break;
+                case "zip":
+                    distributors = distributors.OrderBy(i => i.ZIP);
+                    break;
+                case "zip_desc":
+                    distributors = distributors.OrderByDescending(i => i.ZIP);
+                    break;
+                case "city":
+                    distributors = distributors.OrderBy(i => i.City);
+                    break;
+                case "city_desc":
+                    distributors = distributors.OrderByDescending(i => i.City);
+                    break;
+                case "country":
+                    distributors = distributors.OrderBy(i => i.Country);
+                    break;
+                case "country_desc":
+                    distributors = distributors.OrderByDescending(i => i.Country);
+                    break;
+                default:
+                    distributors = distributors.OrderBy(i => i.Name);
+                    break;
+            }
+
+            int pageSize = 6;
+            return View(await PaginatedList<Distributor>.CreateAsync(distributors.AsNoTracking(), pageNumber ?? 1, pageSize));
+        
         }
 
         // GET: Distributor/Details/5

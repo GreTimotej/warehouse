@@ -21,9 +21,76 @@ namespace web.Controllers
         }
 
         // GET: Warehouse
-        public async Task<IActionResult> Index()
+        
+        public async Task<IActionResult> Index(
+        string sortOrder,
+        string currentFilter,
+        string searchString,
+        int? pageNumber)
         {
-            return View(await _context.Warehouses.ToListAsync());
+            ViewData["CurrentSort"] = sortOrder;
+            ViewData["AddressSortParm"] = String.IsNullOrEmpty(sortOrder) ? "address_desc" : "";
+            ViewData["ZIPSortParm"] = sortOrder == "zip" ? "zip_desc" : "zip";
+            ViewData["CitySortParm"] = sortOrder == "city" ? "city_desc" : "city";
+            ViewData["CountrySortParm"] = sortOrder == "country" ? "country_desc" : "country";
+
+            
+            if (searchString != null)
+            {
+                pageNumber = 1;
+            }
+            else
+            {
+                searchString = currentFilter;
+            }
+            
+            ViewData["CurrentFilter"] = searchString;
+
+            var warehouses = from w in _context.Warehouses
+                            select w;
+
+            if (!String.IsNullOrEmpty(searchString))
+            {
+                Int64 anumber = 9999999;
+                if (Int64.TryParse(searchString,out anumber)) {}
+                warehouses = warehouses.Where(i => i.Address.Contains(searchString)
+                                || (i.ZIP == anumber && anumber != 9999999)
+                                || i.City.Contains(searchString)
+                                || i.Country.Contains(searchString)
+                                );
+            }
+
+            switch (sortOrder)
+            {
+                case "address_desc":
+                    warehouses = warehouses.OrderByDescending(i => i.Address);
+                    break;
+                case "zip":
+                    warehouses = warehouses.OrderBy(i => i.ZIP);
+                    break;
+                case "zip_desc":
+                    warehouses = warehouses.OrderByDescending(i => i.ZIP);
+                    break;
+                case "city":
+                    warehouses = warehouses.OrderBy(i => i.City);
+                    break;
+                case "city_desc":
+                    warehouses = warehouses.OrderByDescending(i => i.City);
+                    break;
+                case "country":
+                    warehouses = warehouses.OrderBy(i => i.Country);
+                    break;
+                case "country_desc":
+                    warehouses = warehouses.OrderByDescending(i => i.Country);
+                    break;
+                default:
+                    warehouses = warehouses.OrderBy(i => i.Address);
+                    break;
+            }
+
+            int pageSize = 6;
+            return View(await PaginatedList<Warehouse>.CreateAsync(warehouses.AsNoTracking(), pageNumber ?? 1, pageSize));
+        
         }
 
         // GET: Warehouse/Details/5

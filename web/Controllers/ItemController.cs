@@ -22,25 +22,56 @@ namespace web.Controllers
         }
 
         // GET: Item
-        public async Task<IActionResult> Index(string sortOrder)
+        public async Task<IActionResult> Index(
+        string sortOrder,
+        string currentFilter,
+        string searchString,
+        int? pageNumber)
         {
-
+            ViewData["CurrentSort"] = sortOrder;
             ViewData["NameSortParm"] = String.IsNullOrEmpty(sortOrder) ? "name_desc" : "";
-            ViewData["DateSortParm"] = sortOrder == "Date" ? "date_desc" : "Date";
+            ViewData["DescriptionSortParm"] = sortOrder == "description" ? "description_desc" : "description";
+            ViewData["CustomerSortParm"] = sortOrder == "customer" ? "customer_desc" : "customer";
+            ViewData["QuantitySortParm"] = sortOrder == "quantity" ? "quantity_desc" : "quantity";
+            ViewData["WarehouseSortParm"] = sortOrder == "warehouse" ? "warehouse_desc" : "warehouse";
+
+
+            if (searchString != null)
+            {
+                pageNumber = 1;
+            }
+            else
+            {
+                searchString = currentFilter;
+            }
+            
+            ViewData["CurrentFilter"] = searchString;
 
             var warehouseContext = _context.Items.Include(i => i.Customer).Include(i => i.Warehouse);
             var items = from i in warehouseContext
                         select i;
+
+
+            if (!String.IsNullOrEmpty(searchString))
+            {
+                Int64 anumber = 9999999;
+                if (Int64.TryParse(searchString,out anumber)) {}
+                items = items.Where(i => i.Name.Contains(searchString)
+                                || i.Description.Contains(searchString)
+                                || (i.Quantity == anumber && anumber != 9999999)
+                                || (i.CustomerID == anumber && anumber != 9999999)
+                                || (i.WarehouseID == anumber && anumber != 9999999));
+            }
 
             switch (sortOrder)
             {
                 case "name_desc":
                     items = items.OrderByDescending(i => i.Name);
                     break;
-                case "desc":
+                case "description":
                     items = items.OrderBy(i => i.Description);
                     break;
-                case "desc_desc":
+                case "description_desc":
                     items = items.OrderByDescending(i => i.Description);
                     break;
                 case "customer":
@@ -48,6 +79,12 @@ namespace web.Controllers
                     break;
                 case "customer_desc":
                     items = items.OrderByDescending(i => i.Customer);
+                    break;
+                case "quantity":
+                    items = items.OrderBy(i => i.Quantity);
+                    break;
+                case "quantity_desc":
+                    items = items.OrderByDescending(i => i.Quantity);
                     break;
                 case "warehouse":
                     items = items.OrderBy(i => i.Warehouse);
@@ -61,8 +98,8 @@ namespace web.Controllers
             }
 
             
-
-            return View(await items.AsNoTracking().ToListAsync());
+            int pageSize = 6;
+            return View(await PaginatedList<Item>.CreateAsync(items.AsNoTracking(), pageNumber ?? 1, pageSize));
         }
 
         // GET: Item/Details/5
