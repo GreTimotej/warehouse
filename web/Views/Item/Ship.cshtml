@@ -1,11 +1,12 @@
 @model web.Models.Item
 
 @{
-    ViewData["Title"] = "Details";
+    ViewData["Title"] = "Ship";
 }
 
-<h1>Details</h1>
+<h1>Ship</h1>
 
+<h3>Are you sure this item has been shiped?</h3>
 <div>
     <h4>Item</h4>
     <hr />
@@ -47,8 +48,10 @@
             @Html.DisplayFor(model => model.Active)
         </dd>
     </dl>
-</div>
-<div>
-    <a asp-action="Edit" asp-route-id="@Model.ID">Edit</a> |
-    <a asp-action="Index">Back to List</a>
+    
+    <form asp-action="Ship">
+        <input type="hidden" asp-for="ID" />
+        <input type="submit" value="Ship" class="btn btn-success" /> |
+        <a asp-action="Index">Back to List</a>
+    </form>
 </div>

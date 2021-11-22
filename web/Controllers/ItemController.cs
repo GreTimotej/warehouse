@@ -26,6 +26,7 @@ namespace web.Controllers
         string sortOrder,
         string currentFilter,
         string searchString,
+        // bool activeBool,
         int? pageNumber)
         {
             ViewData["CurrentSort"] = sortOrder;
@@ -34,6 +35,8 @@ namespace web.Controllers
             ViewData["CustomerSortParm"] = sortOrder == "customer" ? "customer_desc" : "customer";
             ViewData["QuantitySortParm"] = sortOrder == "quantity" ? "quantity_desc" : "quantity";
             ViewData["WarehouseSortParm"] = sortOrder == "warehouse" ? "warehouse_desc" : "warehouse";
+            ViewData["ActiveSortParm"] = sortOrder == "active" ? "active_desc" : "active";
+
 
 
             if (searchString != null)
@@ -63,6 +66,21 @@ namespace web.Controllers
                                 || (i.WarehouseID == anumber && anumber != 9999999));
             }
 
+            // ViewData["ActiveFilter"] = activeBool;
+
+            // switch (activeBool)
+            // {
+            //     case true:
+            //         items = items.Where(i => i.Active == true);
+            //         break;
+            //     case false:
+            //         items = items.Where(i => i.Active == false);
+            //         break;
+            //     default:
+            //         items = items.Where(i => i.Active == true && i.Active == false);
+            //         break;
+            // }
+
             switch (sortOrder)
             {
                 case "name_desc":
@@ -91,6 +109,12 @@ namespace web.Controllers
                     break;
                 case "warehouse_desc":
                     items = items.OrderByDescending(i => i.Warehouse);
+                    break;
+                case "active":
+                    items = items.OrderBy(i => i.Active);
+                    break;
+                case "active_desc":
+                    items = items.OrderByDescending(i => i.Active);
                     break;
                 default:
                     items = items.OrderBy(i => i.Name);
@@ -136,7 +160,7 @@ namespace web.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("ID,Name,Description,Quantity,WarehouseID,CustomerID")] Item item)
+        public async Task<IActionResult> Create([Bind("ID,Name,Description,Quantity,Active,WarehouseID,CustomerID")] Item item)
         {
             if (ModelState.IsValid)
             {
@@ -173,13 +197,13 @@ namespace web.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("ID,Name,Description,Quantity,WarehouseID,CustomerID")] Item item)
+        public async Task<IActionResult> Edit(int id, [Bind("ID,Name,Description,Quantity,Active,WarehouseID,CustomerID")] Item item)
         {
             if (id != item.ID)
             {
                 return NotFound();
             }
-
+        
             if (ModelState.IsValid)
             {
                 try
@@ -234,6 +258,52 @@ namespace web.Controllers
             var item = await _context.Items.FindAsync(id);
             _context.Items.Remove(item);
             await _context.SaveChangesAsync();
+            return RedirectToAction(nameof(Index));
+        }
+
+        // GET: Item/Ship/5
+        [Authorize]
+        public async Task<IActionResult> Ship(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var item = await _context.Items
+                .Include(i => i.Customer)
+                .Include(i => i.Warehouse)
+                .FirstOrDefaultAsync(m => m.ID == id);
+            if (item == null)
+            {
+                return NotFound();
+            }
+
+            return View(item);
+        }
+
+        // POST: Item/Ship/5
+        // To protect from overposting attacks, enable the specific properties you want to bind to.
+        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Ship(int id)
+        {
+            var item = await _context.Items.FindAsync(id);
+            item.Active = false;
+            _context.Items.Update(item);
+            await _context.SaveChangesAsync();
+
+            var evidence = new Evidence
+            {
+                ItemID = item.ID,
+                WarehouseID = item.WarehouseID,
+                CustomerID = item.CustomerID,
+                Out = DateTime.Now
+
+            };
+            _context.Add(evidence);
+                await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 

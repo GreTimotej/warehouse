@@ -12,6 +12,8 @@ namespace web.Models
         
         public int Quantity { get; set; } = 1;
 
+        public bool Active { get; set; } = true;
+
         public int WarehouseID { get; set; }
 
         public int CustomerID { get; set; }
