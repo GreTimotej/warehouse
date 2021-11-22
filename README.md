@@ -13,7 +13,7 @@ V informacijski sistem se bodo torej prijavljali le določeni zaposleni v podjet
 Ob nizki vsoti pomembnih izdelkov bi se informacije o izdelku prikazale tudi na določenem prostoru v sistemu, kjer bi uporabnika opomnilo, da je treba naročiti novo zalogo tega izdelka. Opozorila bi se prikazala tudi, če bi bilo samo skladišče prepolno. To bi posledično prispevalo tudi k bolj uravnovešenimi zalogami med skladišči.
 Predvidene entitete: uporabniki, skladišča, izdelki, stranke, dobavitelji, evidenca.
 
-##Entities:
+## Entities:
 
 (main)
 Warehouse
@@ -22,14 +22,14 @@ Evidence
 Distributor
 Customer
 
-###Warehouse:
+### Warehouse:
 WarehouseID (int) PK
 Address (string)
 ZIP (int)
 City (string)
 Country (string)
 
-###Item: 
+### Item: 
 ItemID(int) PK
 Name (string)
 Description (string)
@@ -38,7 +38,7 @@ Active (bool)
 WarehouseID (int) FK
 CustomerID (int) FK
 
-###Distributor: 
+### Distributor: 
 DistributorID (int) PK
 Name (string)
 Address (string)
@@ -46,20 +46,20 @@ ZIP (int)
 City (string)
 Country (string)
 
-###Evidence:
+### Evidence:
 EvidenceID (int) PK
 itemID (int) FK
 WarehouseID (int) FK
 CustomerID (int) FK
 Out (DateTIme)
 
-###UserRole:
+### UserRole:
 UserID (int) PK
 UserRoleID (int) FK
 Password (hash)
 Email (string)
 
-###Roles:
+### Roles:
 Worker - gleda lahko samo informacije o skladišču v katerem je? spreminja lahko le kvantiteto izdelkov
 Manager - spreminja lahko vse v trenutnem skladišču
 Administrator - vse pravice?
