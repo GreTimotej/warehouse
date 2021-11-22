@@ -12,16 +12,16 @@ using Microsoft.AspNetCore.Authorization;
 namespace web.Controllers
 {
     [Authorize]
-    public class ItemController : Controller
+    public class EvidenceController : Controller
     {
         private readonly WarehouseContext _context;
 
-        public ItemController(WarehouseContext context)
+        public EvidenceController(WarehouseContext context)
         {
             _context = context;
         }
 
-        // GET: Item
+        // GET: Evidence
         public async Task<IActionResult> Index(
         string sortOrder,
         string currentFilter,
@@ -29,12 +29,10 @@ namespace web.Controllers
         int? pageNumber)
         {
             ViewData["CurrentSort"] = sortOrder;
-            ViewData["NameSortParm"] = String.IsNullOrEmpty(sortOrder) ? "name_desc" : "";
-            ViewData["DescriptionSortParm"] = sortOrder == "description" ? "description_desc" : "description";
-            ViewData["CustomerSortParm"] = sortOrder == "customer" ? "customer_desc" : "customer";
-            ViewData["QuantitySortParm"] = sortOrder == "quantity" ? "quantity_desc" : "quantity";
+            ViewData["OutSortParm"] = String.IsNullOrEmpty(sortOrder) ? "out_desc" : "";
             ViewData["WarehouseSortParm"] = sortOrder == "warehouse" ? "warehouse_desc" : "warehouse";
-
+            ViewData["ItemSortParm"] = sortOrder == "item" ? "item_desc" : "item";
+            ViewData["CustomerSortParm"] = sortOrder == "customer" ? "customer_desc" : "customer";
 
             if (searchString != null)
             {
@@ -47,62 +45,56 @@ namespace web.Controllers
             
             ViewData["CurrentFilter"] = searchString;
 
-            var warehouseContext = _context.Items.Include(i => i.Customer).Include(i => i.Warehouse);
-            var items = from i in warehouseContext
-                        select i;
 
-
+            var warehouseContext = _context.Evidences.Include(e => e.Customer).Include(e => e.Item).Include(e => e.Warehouse);
+            var evidences = from e in warehouseContext
+                            select e;
+            
             if (!String.IsNullOrEmpty(searchString))
             {
                 Int64 anumber = 9999999;
                 if (Int64.TryParse(searchString,out anumber)) {}
-                items = items.Where(i => i.Name.Contains(searchString)
-                                || i.Description.Contains(searchString)
-                                || (i.Quantity == anumber && anumber != 9999999)
+                evidences = evidences.Where(i => (i.WarehouseID == anumber && anumber != 9999999)
                                 || (i.CustomerID == anumber && anumber != 9999999)
-                                || (i.WarehouseID == anumber && anumber != 9999999));
+                                || (i.ItemID == anumber && anumber != 9999999)
+                                );
             }
+
 
             switch (sortOrder)
             {
-                case "name_desc":
-                    items = items.OrderByDescending(i => i.Name);
+                case "date_desc":
+                    evidences = evidences.OrderByDescending(i => i.Out);
                     break;
-                case "description":
-                    items = items.OrderBy(i => i.Description);
+                case "item":
+                    evidences = evidences.OrderBy(i => i.Item);
                     break;
-                case "description_desc":
-                    items = items.OrderByDescending(i => i.Description);
+                case "item_desc":
+                    evidences = evidences.OrderByDescending(i => i.Item);
                     break;
                 case "customer":
-                    items = items.OrderBy(i => i.Customer);
+                    evidences = evidences.OrderBy(i => i.Customer);
                     break;
                 case "customer_desc":
-                    items = items.OrderByDescending(i => i.Customer);
-                    break;
-                case "quantity":
-                    items = items.OrderBy(i => i.Quantity);
-                    break;
-                case "quantity_desc":
-                    items = items.OrderByDescending(i => i.Quantity);
+                    evidences = evidences.OrderByDescending(i => i.Customer);
                     break;
                 case "warehouse":
-                    items = items.OrderBy(i => i.Warehouse);
+                    evidences = evidences.OrderBy(i => i.Warehouse);
                     break;
                 case "warehouse_desc":
-                    items = items.OrderByDescending(i => i.Warehouse);
+                    evidences = evidences.OrderByDescending(i => i.Warehouse);
                     break;
                 default:
-                    items = items.OrderBy(i => i.Name);
+                    evidences = evidences.OrderBy(i => i.Out);
                     break;
             }
 
-            
             int pageSize = 6;
-            return View(await PaginatedList<Item>.CreateAsync(items.AsNoTracking(), pageNumber ?? 1, pageSize));
+            return View(await PaginatedList<Evidence>.CreateAsync(evidences.AsNoTracking(), pageNumber ?? 1, pageSize));
+        
         }
 
-        // GET: Item/Details/5
+        // GET: Evidence/Details/5
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -110,47 +102,48 @@ namespace web.Controllers
                 return NotFound();
             }
 
-            var item = await _context.Items
-                .Include(i => i.Customer)
-                .Include(i => i.Warehouse)
+            var evidence = await _context.Evidences
+                .Include(e => e.Customer)
+                .Include(e => e.Item)
+                .Include(e => e.Warehouse)
                 .FirstOrDefaultAsync(m => m.ID == id);
-            if (item == null)
+            if (evidence == null)
             {
                 return NotFound();
             }
 
-            return View(item);
+            return View(evidence);
         }
 
-        // GET: Item/Create
-        [Authorize]
+        // GET: Evidence/Create
         public IActionResult Create()
         {
             ViewData["CustomerID"] = new SelectList(_context.Customers, "ID", "ID");
+            ViewData["ItemID"] = new SelectList(_context.Items, "ID", "ID");
             ViewData["WarehouseID"] = new SelectList(_context.Warehouses, "ID", "ID");
             return View();
         }
 
-        // POST: Item/Create
+        // POST: Evidence/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("ID,Name,Description,Quantity,WarehouseID,CustomerID")] Item item)
+        public async Task<IActionResult> Create([Bind("ID,ItemID,WarehouseID,CustomerID,Out")] Evidence evidence)
         {
             if (ModelState.IsValid)
             {
-                _context.Add(item);
+                _context.Add(evidence);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["CustomerID"] = new SelectList(_context.Customers, "ID", "ID", item.CustomerID);
-            ViewData["WarehouseID"] = new SelectList(_context.Warehouses, "ID", "ID", item.WarehouseID);
-            return View(item);
+            ViewData["CustomerID"] = new SelectList(_context.Customers, "ID", "ID", evidence.CustomerID);
+            ViewData["ItemID"] = new SelectList(_context.Items, "ID", "ID", evidence.ItemID);
+            ViewData["WarehouseID"] = new SelectList(_context.Warehouses, "ID", "ID", evidence.WarehouseID);
+            return View(evidence);
         }
 
-        // GET: Item/Edit/5
-        [Authorize]
+        // GET: Evidence/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -158,24 +151,25 @@ namespace web.Controllers
                 return NotFound();
             }
 
-            var item = await _context.Items.FindAsync(id);
-            if (item == null)
+            var evidence = await _context.Evidences.FindAsync(id);
+            if (evidence == null)
             {
                 return NotFound();
             }
-            ViewData["CustomerID"] = new SelectList(_context.Customers, "ID", "ID", item.CustomerID);
-            ViewData["WarehouseID"] = new SelectList(_context.Warehouses, "ID", "ID", item.WarehouseID);
-            return View(item);
+            ViewData["CustomerID"] = new SelectList(_context.Customers, "ID", "ID", evidence.CustomerID);
+            ViewData["ItemID"] = new SelectList(_context.Items, "ID", "ID", evidence.ItemID);
+            ViewData["WarehouseID"] = new SelectList(_context.Warehouses, "ID", "ID", evidence.WarehouseID);
+            return View(evidence);
         }
 
-        // POST: Item/Edit/5
+        // POST: Evidence/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("ID,Name,Description,Quantity,WarehouseID,CustomerID")] Item item)
+        public async Task<IActionResult> Edit(int id, [Bind("ID,ItemID,WarehouseID,CustomerID,Out")] Evidence evidence)
         {
-            if (id != item.ID)
+            if (id != evidence.ID)
             {
                 return NotFound();
             }
@@ -184,12 +178,12 @@ namespace web.Controllers
             {
                 try
                 {
-                    _context.Update(item);
+                    _context.Update(evidence);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!ItemExists(item.ID))
+                    if (!EvidenceExists(evidence.ID))
                     {
                         return NotFound();
                     }
@@ -200,13 +194,13 @@ namespace web.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["CustomerID"] = new SelectList(_context.Customers, "ID", "ID", item.CustomerID);
-            ViewData["WarehouseID"] = new SelectList(_context.Warehouses, "ID", "ID", item.WarehouseID);
-            return View(item);
+            ViewData["CustomerID"] = new SelectList(_context.Customers, "ID", "ID", evidence.CustomerID);
+            ViewData["ItemID"] = new SelectList(_context.Items, "ID", "ID", evidence.ItemID);
+            ViewData["WarehouseID"] = new SelectList(_context.Warehouses, "ID", "ID", evidence.WarehouseID);
+            return View(evidence);
         }
 
-        // GET: Item/Delete/5
-        [Authorize]
+        // GET: Evidence/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -214,32 +208,33 @@ namespace web.Controllers
                 return NotFound();
             }
 
-            var item = await _context.Items
-                .Include(i => i.Customer)
-                .Include(i => i.Warehouse)
+            var evidence = await _context.Evidences
+                .Include(e => e.Customer)
+                .Include(e => e.Item)
+                .Include(e => e.Warehouse)
                 .FirstOrDefaultAsync(m => m.ID == id);
-            if (item == null)
+            if (evidence == null)
             {
                 return NotFound();
             }
 
-            return View(item);
+            return View(evidence);
         }
 
-        // POST: Item/Delete/5
+        // POST: Evidence/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var item = await _context.Items.FindAsync(id);
-            _context.Items.Remove(item);
+            var evidence = await _context.Evidences.FindAsync(id);
+            _context.Evidences.Remove(evidence);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
-        private bool ItemExists(int id)
+        private bool EvidenceExists(int id)
         {
-            return _context.Items.Any(e => e.ID == id);
+            return _context.Evidences.Any(e => e.ID == id);
         }
     }
 }
