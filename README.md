@@ -30,39 +30,39 @@ Customer
 * Country (string)
 
 ### Item: 
-ItemID(int) PK  
-Name (string)  
-Description (string)  
-Quantity (int)  
-Active (bool)  
-WarehouseID (int) FK  
-CustomerID (int) FK
+* ItemID(int) PK  
+* Name (string)  
+* Description (string)  
+* Quantity (int)  
+* Active (bool)  
+* WarehouseID (int) FK  
+* CustomerID (int) FK
 
 ### Distributor: 
-DistributorID (int) PK  
-Name (string)  
-Address (string)  
-ZIP (int)  
-City (string)  
-Country (string)
+* DistributorID (int) PK  
+* Name (string)  
+* Address (string)  
+* ZIP (int)  
+* City (string)  
+* Country (string)
 
 ### Evidence:
-EvidenceID (int) PK  
-itemID (int) FK  
-WarehouseID (int) FK  
-CustomerID (int) FK  
-Out (DateTIme)
+* EvidenceID (int) PK  
+* itemID (int) FK  
+* WarehouseID (int) FK  
+* CustomerID (int) FK  
+* Out (DateTIme)
 
 ### UserRole:
-UserID (int) PK  
-UserRoleID (int) FK  
-Password (hash)  
-Email (string)
+* UserID (int) PK  
+* UserRoleID (int) FK  
+* Password (hash)  
+* Email (string)
 
 ### Roles:
-Worker - gleda lahko samo informacije o skladišču v katerem je? spreminja lahko le kvantiteto izdelkov  
-Manager - spreminja lahko vse v trenutnem skladišču  
-Administrator - vse pravice?
+* Worker - gleda lahko samo informacije o skladišču v katerem je? spreminja lahko le kvantiteto izdelkov  
+* Manager - spreminja lahko vse v trenutnem skladišču  
+* Administrator - vse pravice?
 
 
 ## Pomembno
