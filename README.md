@@ -1,7 +1,7 @@
 # warehouse
 
 ## Člana ekipe:
-63190314 Gregor Volčanjk
+63190314 Gregor Volčanjk  
 63200104 Timotej Gregorič
 
 
