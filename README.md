@@ -23,11 +23,11 @@ Distributor
 Customer
 
 ### Warehouse:
-WarehouseID (int) PK  
-Address (string)  
-ZIP (int)  
-City (string)  
-Country (string)
+* WarehouseID (int) PK  
+* Address (string)  
+* ZIP (int)  
+* City (string)  
+* Country (string)
 
 ### Item: 
 ItemID(int) PK  
