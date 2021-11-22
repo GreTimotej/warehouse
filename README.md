@@ -16,52 +16,52 @@ Predvidene entitete: uporabniki, skladišča, izdelki, stranke, dobavitelji, evi
 ## Entities:
 
 (main)
-Warehouse
-Item
-Evidence
-Distributor
+Warehouse  
+Item  
+Evidence  
+Distributor  
 Customer
 
 ### Warehouse:
-WarehouseID (int) PK
-Address (string)
-ZIP (int)
-City (string)
+WarehouseID (int) PK  
+Address (string)  
+ZIP (int)  
+City (string)  
 Country (string)
 
 ### Item: 
-ItemID(int) PK
-Name (string)
-Description (string)
-Quantity (int)
-Active (bool)
-WarehouseID (int) FK
+ItemID(int) PK  
+Name (string)  
+Description (string)  
+Quantity (int)  
+Active (bool)  
+WarehouseID (int) FK  
 CustomerID (int) FK
 
 ### Distributor: 
-DistributorID (int) PK
-Name (string)
-Address (string)
-ZIP (int)
-City (string)
+DistributorID (int) PK  
+Name (string)  
+Address (string)  
+ZIP (int)  
+City (string)  
 Country (string)
 
 ### Evidence:
-EvidenceID (int) PK
-itemID (int) FK
-WarehouseID (int) FK
-CustomerID (int) FK
+EvidenceID (int) PK  
+itemID (int) FK  
+WarehouseID (int) FK  
+CustomerID (int) FK  
 Out (DateTIme)
 
 ### UserRole:
-UserID (int) PK
-UserRoleID (int) FK
-Password (hash)
+UserID (int) PK  
+UserRoleID (int) FK  
+Password (hash)  
 Email (string)
 
 ### Roles:
-Worker - gleda lahko samo informacije o skladišču v katerem je? spreminja lahko le kvantiteto izdelkov
-Manager - spreminja lahko vse v trenutnem skladišču
+Worker - gleda lahko samo informacije o skladišču v katerem je? spreminja lahko le kvantiteto izdelkov  
+Manager - spreminja lahko vse v trenutnem skladišču  
 Administrator - vse pravice?
 
 
