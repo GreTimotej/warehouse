@@ -14,5 +14,14 @@ html {
 }
 
 body {
-	margin-bottom: 60px;
+	height: 100%;
+	/* margin-bottom: 60px; */
+	/* background-image: url('../images/warehouse2.jpg'); */
+	background-repeat: no-repeat;
+    background-size: cover;
+    overflow: hidden;
+	background-position: 50% 50%;
+	/* background-color: rgb(187, 115, 66);
+    background-blend-mode:color-burn; */
+	/* backdrop-filter: blur(8px); */
 }

@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Identity;
 
 var builder = WebApplication.CreateBuilder(args);
-var connectionString = builder.Configuration.GetConnectionString("WarehouseContext");
+var connectionString = builder.Configuration.GetConnectionString("AzureContext");
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
@@ -17,6 +17,7 @@ builder.Services.AddDefaultIdentity<ApplicationUser>(options => options.SignIn.R
 builder.Services.AddDbContext<WarehouseContext>(options =>
     options.UseSqlServer(connectionString));
 
+builder.Services.AddSwaggerGen();
 
 var app = builder.Build();
 CreateDbIfNotExists(app);
@@ -44,6 +45,12 @@ app.MapControllerRoute(
     pattern: "{controller=Home}/{action=Index}/{id?}");
 
 app.MapRazorPages();
+
+app.UseSwagger();
+app.UseSwaggerUI(c =>
+{
+    c.SwaggerEndpoint("/swagger/v1/swagger.json", "My API V1");
+});
 
 app.Run();
 
