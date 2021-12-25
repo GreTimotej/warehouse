@@ -59,10 +59,11 @@
                 @Html.DisplayFor(modelItem => item.Quantity)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Customer.ID)
+                @Html.DisplayFor(modelItem => item.Customer.LastName), @Html.DisplayFor(modelItem => item.Customer.FirstName)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Warehouse.ID)
+                @Html.DisplayFor(modelItem => item.Warehouse.Address), @Html.DisplayFor(modelItem => item.Warehouse.City), 
+                    @Html.DisplayFor(modelItem => item.Warehouse.Country)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.Active)

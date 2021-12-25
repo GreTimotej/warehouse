@@ -33,13 +33,14 @@
             @Html.DisplayNameFor(model => model.Customer)
         </dt>
         <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Customer.ID)
+            @Html.DisplayFor(model => model.Customer.LastName), @Html.DisplayFor(model => model.Customer.FirstName)
         </dd>
         <dt class = "col-sm-2">
             @Html.DisplayNameFor(model => model.Warehouse)
         </dt>
         <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Warehouse.ID)
+            @Html.DisplayFor(model => model.Warehouse.Address), @Html.DisplayFor(model => model.Warehouse.City), 
+                    @Html.DisplayFor(model => model.Warehouse.Country)
         </dd>
         <dt class = "col-sm-2">
             @Html.DisplayNameFor(model => model.Active)
