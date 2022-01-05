@@ -3,56 +3,57 @@
 @{
     ViewData["Title"] = "Ship";
 }
-
+<link rel="stylesheet" href="~/css/itemsite.css" asp-append-version="true" />
 <h1>Ship</h1>
-
+<div class="border rounded-3 p-4 shadow">
 <h3>Are you sure this item has been shiped?</h3>
-<div>
-    <h4>Item</h4>
-    <hr />
-    <dl class="row">
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Name)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Name)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Description)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Description)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Quantity)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Quantity)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Customer)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Customer.LastName), @Html.DisplayFor(model => model.Customer.FirstName)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Warehouse)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Warehouse.Address), @Html.DisplayFor(model => model.Warehouse.City), 
-                    @Html.DisplayFor(model => model.Warehouse.Country)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Active)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Active)
-        </dd>
-    </dl>
-    
-    <form asp-action="Ship">
-        <input type="hidden" asp-for="ID" />
-        <input type="submit" value="Ship" class="btn btn-success" /> |
-        <a asp-action="Index">Back to List</a>
-    </form>
+    <div>
+        <h4>Item</h4>
+        <hr />
+        <dl class="row">
+            <dt class = "col-sm-2">
+                @Html.DisplayNameFor(model => model.Name)
+            </dt>
+            <dd class = "col-sm-10">
+                @Html.DisplayFor(model => model.Name)
+            </dd>
+            <dt class = "col-sm-2">
+                @Html.DisplayNameFor(model => model.Description)
+            </dt>
+            <dd class = "col-sm-10">
+                @Html.DisplayFor(model => model.Description)
+            </dd>
+            <dt class = "col-sm-2">
+                @Html.DisplayNameFor(model => model.Quantity)
+            </dt>
+            <dd class = "col-sm-10">
+                @Html.DisplayFor(model => model.Quantity)
+            </dd>
+            <dt class = "col-sm-2">
+                @Html.DisplayNameFor(model => model.Customer)
+            </dt>
+            <dd class = "col-sm-10">
+                @Html.DisplayFor(model => model.Customer.LastName), @Html.DisplayFor(model => model.Customer.FirstName)
+            </dd>
+            <dt class = "col-sm-2">
+                @Html.DisplayNameFor(model => model.Warehouse)
+            </dt>
+            <dd class = "col-sm-10">
+                @Html.DisplayFor(model => model.Warehouse.Address), @Html.DisplayFor(model => model.Warehouse.City), 
+                        @Html.DisplayFor(model => model.Warehouse.Country)
+            </dd>
+            <dt class = "col-sm-2">
+                @Html.DisplayNameFor(model => model.Active)
+            </dt>
+            <dd class = "col-sm-10">
+                @Html.DisplayFor(model => model.Active)
+            </dd>
+        </dl>
+        
+        <form asp-action="Ship">
+            <input type="hidden" asp-for="ID" />
+            <input type="submit" value="Ship" class="btn btn-success" />
+            <a asp-action="Index" class="no-decor btn border border-primary btn-default">Back to List</a>
+        </form>
+    </div>
 </div>

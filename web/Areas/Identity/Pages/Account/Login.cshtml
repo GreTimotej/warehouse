@@ -1,24 +1,21 @@
 ﻿@page
 @model LoginModel
 
-@{
-    ViewData["Title"] = "The Warehouse";
-}
 
 <h1 class="text-dark">@ViewData["Title"]</h1>
 <div style="height: 100;">
-    <div class="d-flex justify-content-center">
-        <section>
+    <div class="d-flex justify-content-center mt-3">
+        <section class="login-form border p-4 rounded-3 shadow">
             <form id="account" method="post">
                 <h2 class="text-dark">Use a local account to log in.</h2>
                 <hr />
                 <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-                <div class="form-floating">
+                <div class="form-floating login-info mb-2">
                     <input asp-for="Input.Email" class="form-control" autocomplete="username" aria-required="true" />
                     <label asp-for="Input.Email" class="form-label"></label>
                     <span asp-validation-for="Input.Email" class="text-danger"></span>
                 </div>
-                <div class="form-floating">
+                <div class="form-floating login-info mb-2">
                     <input asp-for="Input.Password" class="form-control" autocomplete="current-password" aria-required="true" />
                     <label asp-for="Input.Password" class="form-label"></label>
                     <span asp-validation-for="Input.Password" class="text-danger"></span>
@@ -53,6 +50,10 @@
                 </div>
             </form>
         </section>
+    </div>
+    <div class="text-dark w-75 text-center mx-auto mt-3">
+            <p>If you can't sign in or don't have an account, please contact the following email</p>
+            <p>admin@warehouse.com</p>
     </div>
     @* <div class="col-md-6 col-md-offset-2">
         <section>

@@ -122,7 +122,7 @@ namespace web.Controllers
             }
 
             
-            int pageSize = 6;
+            int pageSize = 8;
             return View(await PaginatedList<Item>.CreateAsync(items.AsNoTracking(), pageNumber ?? 1, pageSize));
         }
 
@@ -150,8 +150,15 @@ namespace web.Controllers
         [Authorize]
         public IActionResult Create()
         {
-            ViewData["CustomerID"] = new SelectList(_context.Customers, "ID", "ID");
-            ViewData["WarehouseID"] = new SelectList(_context.Warehouses, "ID", "ID");
+            //ViewData["CustomerID"] = new SelectList(_context.Customers, "ID","ID");
+            //ViewData["WarehouseID"] = new SelectList(_context.Warehouses, "ID", "ID");
+
+
+            ViewData["CustomerID"]= new SelectList((from c in _context.Customers.ToList() select new {
+                ID_Value = c.ID,
+                FullName = c.FirstName + " " + c.LastName
+            }), "ID_Value", "FullName");   
+            ViewData["WarehouseID"] = new SelectList(_context.Warehouses, nameof(Warehouse.ID), nameof(Warehouse.Address));
             return View();
         }
 
@@ -187,8 +194,11 @@ namespace web.Controllers
             {
                 return NotFound();
             }
-            ViewData["CustomerID"] = new SelectList(_context.Customers, "ID", "ID", item.CustomerID);
-            ViewData["WarehouseID"] = new SelectList(_context.Warehouses, "ID", "ID", item.WarehouseID);
+            ViewData["CustomerID"]= new SelectList((from c in _context.Customers.ToList() select new {
+                ID_Value = c.ID,
+                FullName = c.FirstName + " " + c.LastName
+            }), "ID_Value", "FullName");   
+            ViewData["WarehouseID"] = new SelectList(_context.Warehouses, nameof(Warehouse.ID), nameof(Warehouse.Address));
             return View(item);
         }
 

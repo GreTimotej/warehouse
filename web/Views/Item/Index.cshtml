@@ -3,21 +3,22 @@
 @{
     ViewData["Title"] = "Items";
 }
-
+<link rel="stylesheet" href="~/css/itemsite.css" asp-append-version="true" />
 <h1>Items</h1>
 
-<p>
-    <a asp-action="Create">Add New</a>
-</p>
 
+<div class="border rounded-3 p-4 shadow">
 <form asp-action="Index" method="get">
     <div class="form-actions no-color">
         <p>
             Find by name: <input type="text" name="SearchString" value="@ViewData["CurrentFilter"]" />
-            <input type="submit" value="Search" class="btn btn-default" /> |
+            <input type="submit" value="Search" class="btn border border-primary btn-default" />
             @* Filter by activity: <input type="checkbox" name="activeBool" value="@ViewData["ActiveFilter"]" />
             <input type="submit" value="Confirm" class="btn btn-default" /> | *@
-            <a asp-action="Index">Back to Full List</a>
+            <a asp-action="Index" class="btn border border-primary btn-default">Clear filter</a>
+            
+            <a asp-action="Create" class="no-decor btn btn-primary float-end"><B>Add New</B></a>
+
         </p>
     </div>
 </form>
@@ -26,22 +27,22 @@
     <thead>
         <tr>
             <th>
-                <a asp-action="Index" asp-route-sortOrder="@ViewData["NameSortParm"]"  asp-route-currentFilter="@ViewData["CurrentFilter"]">Name</a>
+                <a class="no-decor" asp-action="Index" asp-route-sortOrder="@ViewData["NameSortParm"]"  asp-route-currentFilter="@ViewData["CurrentFilter"]">Name &#8645;</a>
             </th>
             <th>
-                <a asp-action="Index" asp-route-sortOrder="@ViewData["DescriptionSortParm"]"  asp-route-currentFilter="@ViewData["CurrentFilter"]">Description</a>
+                <a class="no-decor" asp-action="Index" asp-route-sortOrder="@ViewData["DescriptionSortParm"]"  asp-route-currentFilter="@ViewData["CurrentFilter"]">Description &#8645;</a>
             </th>
             <th>
-                <a asp-action="Index" asp-route-sortOrder="@ViewData["QuantitySortParm"]" asp-route-currentFilter="@ViewData["CurrentFilter"]">Quantity</a>
+                <a class="no-decor" asp-action="Index" asp-route-sortOrder="@ViewData["QuantitySortParm"]" asp-route-currentFilter="@ViewData["CurrentFilter"]">Quantity &#8645;</a>
             </th>
             <th>
-                <a asp-action="Index" asp-route-sortOrder="@ViewData["CustomerSortParm"]" asp-route-currentFilter="@ViewData["CurrentFilter"]">Customer</a>
+                <a class="no-decor" asp-action="Index" asp-route-sortOrder="@ViewData["CustomerSortParm"]" asp-route-currentFilter="@ViewData["CurrentFilter"]">Customer &#8645;</a>
             </th>
             <th>
-                <a asp-action="Index" asp-route-sortOrder="@ViewData["WarehouseSortParm"]" asp-route-currentFilter="@ViewData["CurrentFilter"]">Warehouse</a>
+                <a class="no-decor" asp-action="Index" asp-route-sortOrder="@ViewData["WarehouseSortParm"]" asp-route-currentFilter="@ViewData["CurrentFilter"]">Warehouse &#8645;</a>
             </th>
             <th>
-                <a asp-action="Index" asp-route-sortOrder="@ViewData["ActiveSortParm"]" asp-route-currentFilter="@ViewData["CurrentFilter"]">Active</a>
+                <a class="no-decor" asp-action="Index" asp-route-sortOrder="@ViewData["ActiveSortParm"]" asp-route-currentFilter="@ViewData["CurrentFilter"]">Active</a>
             </th>
             <th></th>
         </tr>
@@ -52,7 +53,7 @@
             <td>
                 @Html.DisplayFor(modelItem => item.Name)
             </td>
-            <td>
+            <td class="item-desc">
                 @Html.DisplayFor(modelItem => item.Description)
             </td>
             <td>
@@ -61,9 +62,8 @@
             <td>
                 @Html.DisplayFor(modelItem => item.Customer.LastName), @Html.DisplayFor(modelItem => item.Customer.FirstName)
             </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Warehouse.Address), @Html.DisplayFor(modelItem => item.Warehouse.City), 
-                    @Html.DisplayFor(modelItem => item.Warehouse.Country)
+            <td class="item-warehouse">
+                @Html.DisplayFor(modelItem => item.Warehouse.Address), @Html.DisplayFor(modelItem => item.Warehouse.City)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.Active)
@@ -83,9 +83,30 @@
                         <a asp-action="Create" asp-route-id="@item.ID">Create</a>
                     }
                 }
-                <a asp-action="Ship" asp-route-id="@item.ID">Ship item</a>
+                <a asp-action="Ship" asp-route-id="@item.ID">Ship</a>
             </td>
         </tr>
 }
     </tbody>
 </table>
+
+@{
+    var prevDisabled = !Model.HasPreviousPage ? "disabled" : "";
+    var nextDisabled = !Model.HasNextPage ? "disabled" : "";
+}
+
+<a asp-action="Index"
+   asp-route-sortOrder="@ViewData["CurrentSort"]"
+   asp-route-pageNumber="@(Model.PageIndex - 1)"
+   asp-route-currentFilter="@ViewData["CurrentFilter"]"
+   class="btn border border-primary btn-default @prevDisabled">
+    Previous
+</a>
+<a asp-action="Index"
+   asp-route-sortOrder="@ViewData["CurrentSort"]"
+   asp-route-pageNumber="@(Model.PageIndex + 1)"
+   asp-route-currentFilter="@ViewData["CurrentFilter"]"
+   class="btn border border-primary btn-default @nextDisabled">
+    Next
+</a>
+</div>
