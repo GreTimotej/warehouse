@@ -1,0 +1,11 @@
+a.no-decor {
+	text-decoration: none;
+}
+
+.item-desc {
+	max-width: 200px;
+}
+
+.item-warehouse {
+	max-width: 250px;
+}
