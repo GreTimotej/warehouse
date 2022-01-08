@@ -16,9 +16,7 @@
             @* Filter by activity: <input type="checkbox" name="activeBool" value="@ViewData["ActiveFilter"]" />
             <input type="submit" value="Confirm" class="btn btn-default" /> | *@
             <a asp-action="Index" class="btn border border-primary btn-default">Clear filter</a>
-            
-            <a asp-action="Create" class="no-decor btn btn-primary float-end"><B>Add New</B></a>
-
+            <a asp-action="Create" class="no-decor btn btn-primary float-end">Add New</a>
         </p>
     </div>
 </form>
@@ -80,7 +78,6 @@
                     {
                         <a asp-action="Edit" asp-route-id="@item.ID">Edit</a>
                         <a asp-action="Delete" asp-route-id="@item.ID">Delete</a>
-                        <a asp-action="Create" asp-route-id="@item.ID">Create</a>
                     }
                 }
                 <a asp-action="Ship" asp-route-id="@item.ID">Ship</a>
