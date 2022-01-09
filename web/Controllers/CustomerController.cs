@@ -127,7 +127,7 @@ namespace web.Controllers
         }
 
         // GET: Customer/Create
-        [Authorize(Roles = "Administrator")]
+        [Authorize(Roles = "Administrator, Manager")]
         public IActionResult Create()
         {
             return View();
@@ -202,7 +202,7 @@ namespace web.Controllers
         }
 
         // GET: Customer/Delete/5
-        [Authorize(Roles = "Administrator")]
+        [Authorize(Roles = "Administrator, Manager")]
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)

@@ -181,7 +181,7 @@ namespace web.Controllers
         }
 
         // GET: Item/Edit/5
-        [Authorize(Roles = "Administrator, Manager")]
+        [Authorize]
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)

@@ -195,7 +195,7 @@ namespace web.Controllers
         }
 
         // GET: Distributor/Delete/5
-        [Authorize(Roles = "Administrator")]
+        [Authorize(Roles = "Administrator, Manager")]
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
