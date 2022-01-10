@@ -18,8 +18,12 @@ namespace web.Models
 
         public int CustomerID { get; set; }
 
+        public int DistributorID { get; set; }
+
         public Customer? Customer { get; set; }
 
         public Warehouse? Warehouse { get; set; }
+
+        public Distributor? Distributor { get; set; }
     }
 }

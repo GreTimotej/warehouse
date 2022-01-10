@@ -7,11 +7,11 @@
 
 ## Opis teme
 
-Z informacijskim sistemom Warehouse Manager bodo podjetja in uporabniki le tega imeli enostavnejši vpogled na vse informacije in operacije skladišč, ki si jih lastijo, hkrati pa jim to omogoča tudi veliko lažje vodenje skladišč.
-Izdelek ni mišljen za stranke podjetja, temveč za določene delavce podjetja. To pomeni pogled na vse od izdelkov v vsakem izmed skladišč, čase dobave različnih dobaviteljev in naročil strank in celotno evidenco vseh preteklih dobav in izvozov produktov.
+Z informacijskim sistemom Warehouse Manager bodo podjetja in uporabniki le-tega imeli enostavnejši vpogled nad vsemi informacijami in operacijami skladišč, ki si jih lastijo, hkrati pa jim to omogoča tudi veliko lažje vodenje skladišč.
+Izdelek ni mišljen za stranke podjetja, temveč za določene delavce podjetja. To pomeni pogled nad izdelki v vsakem izmed skladišč, dobavne čase različnih dobaviteljev in naročil strank in celotno evidenco vseh preteklih dobav in izvozov produktov.
 
 V informacijski sistem se bodo torej prijavljali le določeni zaposleni v podjetju, ki jim je dodeljena ta pravica. Po prijavi bodo ti lahko v sistem vnašali določene podatke (nova pošiljka v evidenco, sprememba števila nekega izdelka v določenem skladišču, dodajanje izdelkov v skladišče...), ali pa brskali po že vnešenih podatkih.
-Predvidene entitete: uporabniki, skladišča, izdelki, stranke, dobavitelji, evidenca.
+
 
 ## Entities:
 
@@ -89,9 +89,20 @@ Tega lahko ustvari le administrator aplikacije. Ko se uporabnik prijavi v aplika
 
 - Vsaka vsaka izmed teh strani ima izpis teh entitet, po katerih lahko uporabnik brska z iskanjem nizov, straneh, ali pa jih sortira glede na lastnosti. Ogleda si lahko tudi detajle, in glede na pravice tudi kreira, ureja ali briše le te.
 
-Mobilno aplikacija je na voljo vsem zaposlenim, z njo pa lahko vnašajo v bazo nove izdelke, ter enako funkcijo ogledovanja kot v spletni aplikaciji.
+Mobilno aplikacija je na voljo vsem zaposlenim. Z njo pa lahko v bazo vnašajo nove izdelke, jih skenirajo in izvažajo. Aplikacija prav tako omogoča pregled nad vsemi izdelki, ali v posamezenm skladišču, skladisšči ter strankami.
 
-- Mobilna aplikacija ima tudi možnost vnosa izdelkov s skeniranjem določenih QR kod, da delavcem olajša vnos informacij o izdelkih.
+- Skeniranje izdelkov poteka s skeniranjem QR kod, ki so nič drugega kot pa samo številka izdelka.
+
+### Delitev dela
+#### Gregor:
+
+#### Timotej:
+- Zasnova delovanja spletne aplikacije
+- Izdelovanje modelov, controllerjev in view-ov
+- Kreiranje PB, migracij in začetne populacije baze
+- Implementacija funkcionalnosti (npr. Export)
+- Postavitev aplikacije v oblaku (https://warehouse-is.azurewebsites.net/)
+- Mobilna aplikacija
 
 ## Pomembno
 
