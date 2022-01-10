@@ -149,6 +149,7 @@ namespace web.Controllers
         }
 
         // GET: Evidence/Edit/5
+        [Authorize(Roles = "Administrator, Manager")]
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -206,6 +207,7 @@ namespace web.Controllers
         }
 
         // GET: Evidence/Delete/5
+        [Authorize(Roles = "Administrator, Manager")]
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
