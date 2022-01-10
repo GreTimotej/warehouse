@@ -1,48 +1,38 @@
-@model PaginatedList<web.Models.Item>
+@model IEnumerable<web.Models.Item>
 
 @{
-    ViewData["Title"] = "Items";
+    ViewData["Title"] = "Index";
 }
-<link rel="stylesheet" href="~/css/itemsite.css" asp-append-version="true" />
-<h1>Items</h1>
 
+<h1>Index</h1>
 
-<div class="border rounded-3 p-4 shadow">
-<form asp-action="Index" method="get">
-    <div class="form-actions no-color">
-        <p>
-            Find by name: <input type="text" name="SearchString" value="@ViewData["CurrentFilter"]" />
-            <input type="submit" value="Search" class="btn border border-primary btn-default" />
-            @* Filter by activity: <input type="checkbox" name="activeBool" value="@ViewData["ActiveFilter"]" />
-            <input type="submit" value="Confirm" class="btn btn-default" /> | *@
-            <a asp-action="Index" class="btn border border-primary btn-default">Clear filter</a>
-            
-            <a asp-action="Create" class="no-decor btn btn-primary float-end"><B>Add New</B></a>
-
-        </p>
-    </div>
-</form>
-
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
 <table class="table">
     <thead>
         <tr>
             <th>
-                <a class="no-decor" asp-action="Index" asp-route-sortOrder="@ViewData["NameSortParm"]"  asp-route-currentFilter="@ViewData["CurrentFilter"]">Name &#8645;</a>
+
+                @Html.DisplayNameFor(model => model.Name)
             </th>
             <th>
-                <a class="no-decor" asp-action="Index" asp-route-sortOrder="@ViewData["DescriptionSortParm"]"  asp-route-currentFilter="@ViewData["CurrentFilter"]">Description &#8645;</a>
+                @Html.DisplayNameFor(model => model.Description)
             </th>
             <th>
-                <a class="no-decor" asp-action="Index" asp-route-sortOrder="@ViewData["QuantitySortParm"]" asp-route-currentFilter="@ViewData["CurrentFilter"]">Quantity &#8645;</a>
+                @Html.DisplayNameFor(model => model.Quantity)
             </th>
             <th>
-                <a class="no-decor" asp-action="Index" asp-route-sortOrder="@ViewData["CustomerSortParm"]" asp-route-currentFilter="@ViewData["CurrentFilter"]">Customer &#8645;</a>
+                @Html.DisplayNameFor(model => model.Active)
             </th>
             <th>
-                <a class="no-decor" asp-action="Index" asp-route-sortOrder="@ViewData["WarehouseSortParm"]" asp-route-currentFilter="@ViewData["CurrentFilter"]">Warehouse &#8645;</a>
+                @Html.DisplayNameFor(model => model.Customer)
             </th>
             <th>
-                <a class="no-decor" asp-action="Index" asp-route-sortOrder="@ViewData["ActiveSortParm"]" asp-route-currentFilter="@ViewData["CurrentFilter"]">Active</a>
+                @Html.DisplayNameFor(model => model.Warehouse)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Distributor)
             </th>
             <th></th>
         </tr>
@@ -60,30 +50,21 @@
                 @Html.DisplayFor(modelItem => item.Quantity)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Customer.LastName), @Html.DisplayFor(modelItem => item.Customer.FirstName)
-            </td>
-            <td class="item-warehouse">
-                @Html.DisplayFor(modelItem => item.Warehouse.Address), @Html.DisplayFor(modelItem => item.Warehouse.City)
-            </td>
-            <td>
                 @Html.DisplayFor(modelItem => item.Active)
             </td>
             <td>
-                <a asp-action="Details" asp-route-id="@item.ID">Details</a>
-                @if (User.Identity.IsAuthenticated)
-                {
-                    if (User.IsInRole("Manager"))
-                    {
-                        <a asp-action="Edit" asp-route-id="@item.ID">Edit</a>
-                    }
-                    else if (User.IsInRole("Administrator"))
-                    {
-                        <a asp-action="Edit" asp-route-id="@item.ID">Edit</a>
-                        <a asp-action="Delete" asp-route-id="@item.ID">Delete</a>
-                        <a asp-action="Create" asp-route-id="@item.ID">Create</a>
-                    }
-                }
-                <a asp-action="Ship" asp-route-id="@item.ID">Ship</a>
+                @Html.DisplayFor(modelItem => item.Customer.ID)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Warehouse.ID)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Distributor.ID)
+            </td>
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.ID">Edit</a> |
+                <a asp-action="Details" asp-route-id="@item.ID">Details</a> |
+                <a asp-action="Delete" asp-route-id="@item.ID">Delete</a>
             </td>
         </tr>
 }
