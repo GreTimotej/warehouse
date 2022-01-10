@@ -13,6 +13,7 @@
     <thead>
         <tr>
             <th>
+
                 @Html.DisplayNameFor(model => model.Name)
             </th>
             <th>
@@ -42,7 +43,7 @@
             <td>
                 @Html.DisplayFor(modelItem => item.Name)
             </td>
-            <td>
+            <td class="item-desc">
                 @Html.DisplayFor(modelItem => item.Description)
             </td>
             <td>
@@ -69,3 +70,24 @@
 }
     </tbody>
 </table>
+
+@{
+    var prevDisabled = !Model.HasPreviousPage ? "disabled" : "";
+    var nextDisabled = !Model.HasNextPage ? "disabled" : "";
+}
+
+<a asp-action="Index"
+   asp-route-sortOrder="@ViewData["CurrentSort"]"
+   asp-route-pageNumber="@(Model.PageIndex - 1)"
+   asp-route-currentFilter="@ViewData["CurrentFilter"]"
+   class="btn border border-primary btn-default @prevDisabled">
+    Previous
+</a>
+<a asp-action="Index"
+   asp-route-sortOrder="@ViewData["CurrentSort"]"
+   asp-route-pageNumber="@(Model.PageIndex + 1)"
+   asp-route-currentFilter="@ViewData["CurrentFilter"]"
+   class="btn border border-primary btn-default @nextDisabled">
+    Next
+</a>
+</div>

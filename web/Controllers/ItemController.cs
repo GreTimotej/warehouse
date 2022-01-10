@@ -22,8 +22,10 @@ namespace web.Controllers
         // GET: Item
         public async Task<IActionResult> Index()
         {
+
             var warehouseContext = _context.Items.Include(i => i.Customer).Include(i => i.Distributor).Include(i => i.Warehouse);
             return View(await warehouseContext.ToListAsync());
+
         }
 
         // GET: Item/Details/5
@@ -50,9 +52,11 @@ namespace web.Controllers
         // GET: Item/Create
         public IActionResult Create()
         {
+
             ViewData["CustomerID"] = new SelectList(_context.Customers, "ID", "ID");
             ViewData["DistributorID"] = new SelectList(_context.Distributors, "ID", "ID");
             ViewData["WarehouseID"] = new SelectList(_context.Warehouses, "ID", "ID");
+
             return View();
         }
 
@@ -88,9 +92,11 @@ namespace web.Controllers
             {
                 return NotFound();
             }
+
             ViewData["CustomerID"] = new SelectList(_context.Customers, "ID", "ID", item.CustomerID);
             ViewData["DistributorID"] = new SelectList(_context.Distributors, "ID", "ID", item.DistributorID);
             ViewData["WarehouseID"] = new SelectList(_context.Warehouses, "ID", "ID", item.WarehouseID);
+
             return View(item);
         }
 

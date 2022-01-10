@@ -3,11 +3,12 @@
 @{
     ViewData["Title"] = "Edit";
 }
-
+<link rel="stylesheet" href="~/css/itemsite.css" asp-append-version="true" />
 <h1>Edit</h1>
-
+<div class="border rounded-3 p-4 shadow">
 <h4>Item</h4>
 <hr />
+
 <div class="row">
     <div class="col-md-4">
         <form asp-action="Edit">
@@ -52,10 +53,8 @@
                 <input type="submit" value="Save" class="btn btn-primary" />
             </div>
         </form>
-    </div>
-</div>
 
-<div>
-    <a asp-action="Index">Back to List</a>
+    </div>
+
 </div>
 

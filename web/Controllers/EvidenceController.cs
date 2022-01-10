@@ -118,9 +118,14 @@ namespace web.Controllers
         // GET: Evidence/Create
         public IActionResult Create()
         {
-            ViewData["CustomerID"] = new SelectList(_context.Customers, "ID", "ID");
-            ViewData["ItemID"] = new SelectList(_context.Items, "ID", "ID");
-            ViewData["WarehouseID"] = new SelectList(_context.Warehouses, "ID", "ID");
+            //ViewData["CustomerID"] = new SelectList(_context.Customers, "ID", "ID");
+            ViewData["CustomerID"]= new SelectList((from c in _context.Customers.ToList() select new {
+                ID_Value = c.ID,
+                FullName = c.FirstName + " " + c.LastName
+            }), "ID_Value", "FullName");
+            //ViewData["ItemID"] = new SelectList(_context.Items, "ID", "ID");
+            ViewData["ItemID"] = new SelectList(_context.Items, nameof(Item.ID), nameof(Item.Name));
+            ViewData["WarehouseID"] = new SelectList(_context.Warehouses, nameof(Warehouse.ID), nameof(Warehouse.Address));
             return View();
         }
 
