@@ -49,7 +49,13 @@
         </dl>
     </div>
     <div>
-        <a asp-action="Edit" class="no-decor btn border border-primary btn-default" asp-route-id="@Model.ID">Edit</a>
+        @if (User.Identity.IsAuthenticated)
+        {
+            if (User.IsInRole("Administartor"))
+            {
+                <a asp-action="Edit" class="no-decor btn border border-primary btn-default" asp-route-id="@Model.ID">Edit</a>
+            }
+        }
         <a asp-action="Index" class="no-decor btn border border-primary btn-default">Back to List</a>
     </div>
 </div>

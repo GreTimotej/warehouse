@@ -15,7 +15,13 @@
                 Find by name: <input type="text" name="SearchString" value="@ViewData["CurrentFilter"]" />
                 <input type="submit" value="Search" class="btn btn-default" /> |
                 <a asp-action="Index" class="btn border border-primary btn-default">Clear Filter</a>
-                <a asp-action="Create" class="no-decor btn btn-primary float-end">Add New</a>
+                @if (User.Identity.IsAuthenticated)
+                {
+                    if (User.IsInRole("Administrator"))
+                    {
+                        <a asp-action="Create" class="no-decor btn btn-primary float-end">Add New</a>
+                    }
+                }
             </p>
         </div>
     </form>
@@ -55,9 +61,16 @@
                     @Html.DisplayFor(modelItem => item.Customer.LastName), @Html.DisplayFor(modelItem => item.Customer.FirstName)
                 </td>
                 <td>
-                    <a asp-action="Edit" asp-route-id="@item.ID">Edit</a> |
-                    <a asp-action="Details" asp-route-id="@item.ID">Details</a> |
-                    <a asp-action="Delete" asp-route-id="@item.ID">Delete</a>
+                    @if (User.Identity.IsAuthenticated)
+                {
+                    <a asp-action="Details" asp-route-id="@item.ID">Details</a> 
+
+                    if (User.IsInRole("Administrator"))
+                    {
+                        <a asp-action="Edit" asp-route-id="@item.ID">Edit</a> 
+                        <a asp-action="Delete" asp-route-id="@item.ID">Delete</a>
+                    }
+                }
                 </td>
             </tr>
     }

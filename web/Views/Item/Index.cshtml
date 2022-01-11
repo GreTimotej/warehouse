@@ -79,7 +79,7 @@
                 <a asp-action="Edit" asp-route-id="@item.ID">Edit</a>
                 @if (User.Identity.IsAuthenticated)
                 {
-                    if (User.IsInRole("Administrator"))
+                    if (User.IsInRole("Administrator") || User.IsInRole("Manager"))
                     {
                         <a asp-action="Delete" asp-route-id="@item.ID">Delete</a>
                     }

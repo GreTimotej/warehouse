@@ -111,7 +111,7 @@ namespace web.Controllers
             return View(warehouse);
         }
 
-        [Authorize(Roles = "Administartor")]
+        [Authorize(Roles = "Administrator")]
         // GET: Warehouse/Create
         public IActionResult Create()
         {
