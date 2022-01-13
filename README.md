@@ -5,6 +5,20 @@
 63190314 Gregor Volčanjk  
 63200104 Timotej Gregorič
 
+## Nekaj slik iz Spletne in Mobilne Aplikacije
+![screencapture-warehouse-is-azurewebsites-net-Item-2022-01-13-18_55_15](https://user-images.githubusercontent.com/65243657/149383540-60b00e3b-f003-4689-8bbb-97173733d60a.png)
+
+![screencapture-warehouse-is-azurewebsites-net-Item-Create-2022-01-13-18_56_10](https://user-images.githubusercontent.com/65243657/149383601-0370468b-15b8-4530-9478-eaa46dc74b7c.png)
+
+
+![image](https://user-images.githubusercontent.com/65243657/149384388-be403380-141c-45a3-83ee-fc9c4eb1df6e.png)
+
+![image](https://user-images.githubusercontent.com/65243657/149384475-11a29420-10cb-4eea-8b59-196207f2138a.png)
+
+![image](https://user-images.githubusercontent.com/65243657/149384572-423c9ea0-4620-473a-91ee-19cba6682fca.png)
+
+
+
 ## Opis teme
 
 Z informacijskim sistemom Warehouse Manager bodo podjetja in uporabniki le-tega imeli enostavnejši vpogled nad vsemi informacijami in operacijami skladišč, ki si jih lastijo, hkrati pa jim to omogoča tudi veliko lažje vodenje skladišč.
@@ -94,7 +108,6 @@ Mobilno aplikacija je na voljo vsem zaposlenim. Z njo pa lahko v bazo vnašajo n
 - Skeniranje izdelkov poteka s skeniranjem QR kod, ki so nič drugega kot pa samo številka izdelka.
 
 ### Delitev dela
-#### Gregor:
 
 #### Timotej:
 - Zasnova delovanja spletne aplikacije
@@ -103,6 +116,18 @@ Mobilno aplikacija je na voljo vsem zaposlenim. Z njo pa lahko v bazo vnašajo n
 - Implementacija funkcionalnosti (npr. Export)
 - Postavitev aplikacije v oblaku (https://warehouse-is.azurewebsites.net/)
 - Mobilna aplikacija
+
+#### Gregor:
+- Dodajanje funkcionalnosti v controllerju (strani, search, filter,...)
+- UI Spletna Aplikacija
+- UI Mobilna Aplikacija
+- Dokumentacija
+- Povezovanje controller funkcionalnosti z viewi (strani, search, filter,...)
+
+## Diagram podatkovne baze
+  ![image](https://user-images.githubusercontent.com/65243657/149382999-9f2af741-9cb7-4c04-82aa-156de021775b.png)
+
+
 
 ## Pomembno
 
